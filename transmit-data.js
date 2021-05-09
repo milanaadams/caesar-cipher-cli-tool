@@ -7,8 +7,7 @@ async function transmitData(options) {
 
   if(options.input) {
     try {
-      accessSync(path.join(__dirname, options.input), constants.R_OK | constants.W_OK);
-      console.log(path.join(__dirname, options.input))
+      fs.accessSync(path.join(__dirname, options.input), fs.constants.R_OK | fs.constants.W_OK);
     } catch (err) {
       console.error(`No access to ${options.input} file!`);
       process.exit();
@@ -17,7 +16,7 @@ async function transmitData(options) {
 
   if(options.output) {
     try {
-      accessSync(options.output && !path.join(__dirname, options.output), constants.R_OK | constants.W_OK);
+      fs.accessSync(path.join(__dirname, options.output), fs.constants.R_OK | fs.constants.W_OK);
     } catch (err) {
       console.error(`No access to ${options.output} file!`);
       process.exit();
