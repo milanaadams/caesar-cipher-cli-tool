@@ -1,0 +1,22 @@
+{
+  "name": "caesar-cipher-cli-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cli.js",
+  "scripts": {
+    "test": "start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milanaadams/caesar-cipher-cli-tool.git"
+  },
+  "author": "milanaadams",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milanaadams/caesar-cipher-cli-tool/issues"
+  },
+  "homepage": "https://github.com/milanaadams/caesar-cipher-cli-tool#readme",
+  "dependencies": {
+    "commander": "^7.2.0"
+  }
+}
