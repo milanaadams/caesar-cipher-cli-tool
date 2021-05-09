@@ -14,9 +14,9 @@ program
 
 const options = program.opts();
 
-/* if (options.action !== 'encode' || options.action !== 'decode') {
+if (options.action !== 'encode' && options.action !== 'decode') {
   process.stderr.write('Action must be either \'encode\' or \'decode\'\n');
   process.exit();
-} */
+}
 
 transmitData(options);
