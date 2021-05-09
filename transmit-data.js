@@ -1,42 +1,55 @@
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline');
+const { Transform } = require('stream');
+const { pipeline } = require('stream');
 const cipherText = require('./caesar-cipher');
 
 async function transmitData(options) {
 
-  if(options.input) {
+  if (options.input) {
     try {
       fs.accessSync(path.join(__dirname, options.input), fs.constants.R_OK | fs.constants.W_OK);
     } catch (err) {
-      console.error(`No access to ${options.input} file!`);
+      process.stderr.write(`No access to ${options.input} file!\n`);
       process.exit();
     }
   }
 
-  if(options.output) {
+  if (options.output) {
     try {
       fs.accessSync(path.join(__dirname, options.output), fs.constants.R_OK | fs.constants.W_OK);
     } catch (err) {
-      console.error(`No access to ${options.output} file!`);
+      process.stderr.write(`No access to ${options.output} file!\n`);
       process.exit();
     }
   }
 
   const readFrom = options.input ? fs.createReadStream(path.join(__dirname, options.input)) : process.stdin;
-  const writeTo = options.output ? fs.createWriteStream(path.join(__dirname, options.output)) : process.stdout;
+  const writeTo = options.output ? fs.createWriteStream(path.join(__dirname, options.output), { 'flags': 'a' }) : process.stdout;
 
   readFrom.setEncoding('utf8');
 
-  const rl = readline.createInterface({
-    input: readFrom,
-    terminal: false
+  
+
+  const transformText = new Transform({
+    transform(chunk, encoding, callback) {
+      this.push(cipherText(chunk.toString(), options.shift, options.action));
+      callback();
+    }
   });
 
-  rl.on('line', (line) => {
-    const processedText = cipherText(line, options.shift, options.action);
-    writeTo.write(`${processedText}\n`);
-  })
+  readFrom.on('end', () => transformText.push('\n'));
+
+  pipeline(
+    readFrom,
+    transformText,
+    writeTo,
+    (err) => {
+      if (err) {
+        process.stderr.write('Pipeline failed.\n');
+      }
+    }
+  )
 }
 
 module.exports = transmitData;
