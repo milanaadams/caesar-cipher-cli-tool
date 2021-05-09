@@ -13,18 +13,18 @@ function cipherText(text, shift, mode) {
       const charCode = char.charCodeAt(0);
       if (charCode >= 65 && charCode <= 90) {
         if (mode === 'encode') {
-          return String.fromCharCode(((charCode + shift % 26 - 65) ) + 65);
+          return String.fromCharCode(((charCode + shift - 65) % 26) + 65);
         } else if (mode === 'decode') {
-          return String.fromCharCode(((charCode - shift % 26 - 65)) + 65);
+          return String.fromCharCode(((charCode - shift - 90) % 26) + 90);
         } else {
           throw new Error('Action must be either \'encode\' or \'decode\'');
         }
       }
       if (charCode >= 97 && charCode <= 122) {
         if (mode === 'encode') {
-          return String.fromCharCode(((charCode + shift % 26 - 97)) + 97);
+          return String.fromCharCode(((charCode + shift - 97) % 26 ) + 97);
         } else if (mode === 'decode') {
-          return String.fromCharCode(((charCode - shift % 26 - 97)) + 97);
+          return String.fromCharCode(((charCode - shift - 122) % 26) + 122);
         } else {
           throw new Error('Shift must be either \'encode\' or \'decode\'');
         }
